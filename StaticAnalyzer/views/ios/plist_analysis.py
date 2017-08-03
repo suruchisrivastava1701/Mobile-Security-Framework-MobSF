@@ -162,17 +162,17 @@ def __check_permissions(p_list):
 def __check_insecure_connections(p_list):
     '''Check info.plist for insecure connection configurations.'''
     print "[INFO] Checking for Insecure Connections"
-
     insecure_connections = []
-
     if 'NSAppTransportSecurity' in p_list:
         ns_app_trans_dic = p_list['NSAppTransportSecurity']
-        if 'NSExceptionDomains' in ns_app_trans_dic:
-            for key in ns_app_trans_dic['NSExceptionDomains']:
-                insecure_connections.append(key)
+        if "True" in str(ns_app_trans_dic):
+            if 'NSExceptionDomains' in ns_app_trans_dic:
+                for key in ns_app_trans_dic['NSExceptionDomains']:
+                    insecure_connections.append(key)
+            if insecure_connections == []:
+                insecure_connections.append(p_list['NSAppTransportSecurity'])
 
     return insecure_connections
-
 
 def plist_analysis(src, is_source):
     """Plist Analysis"""
